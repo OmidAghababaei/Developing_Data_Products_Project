@@ -1,0 +1,57 @@
+---
+author: "Omid"
+title: "Developing Data Product Project"
+date:  13/02/2021
+output: 
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+### Introduction 
+
+In this  Project, we build 
+
+- **A Shiny application** that has widget input, ui.R input in server.R, reactive output using server calculations, and supporting documentation.
+
+- **A Reproducible Pitch Presentation** that contains five slides Rstudio Presenter that is pushed to and hosted on  Rpubs and contains embedded `R` code that runs. 
+
+### The Links to Project Shiny App & github are
+
+1. Shiny App: [Link](https://aghababaei-omid.shinyapps.io/Developing_Data_Products_Project/)
+2. `server.R` and `ui.R` files: [Link](https://github.com/OmidAghababaei/Developing_Data_Products_Project.git) 
+
+
+### New York Air Quality  & Data Details
+The ozone layer absorbs UVB ultraviolet light from the sun. The ozone layer depletion increases surface UVB levels (all else equal), which could lead to damage, including increase in skin cancer.
+
+The data were obtained from the New York State Department of Conservation (ozone data) and the National Weather Service (meteorological data).
+Daily readings of the following air quality values for May 1, 1973 (a Tuesday) to September 30, 1973.
+- Ozone: Mean ozone in parts per billion from 1300 to 1500 hours at Roosevelt Island
+- Solar.R: Solar radiation in Langleys in the frequency band 4000-7700 Angstroms from 0800 to 1200 hours at Central Park
+- Wind: Average wind speed in miles per hour at 0700 and 1000 hours at LaGuardia Airport
+- Temp: Maximum daily temperature in degrees Fahrenheit at La Guardia Airport.
+
+    
+### Data Exploration and Analysis 
+We show the effect of Solar.R and Temperature on the Ozone layer.
+
+```{r airquality, echo= TRUE,results='hide'}
+summary(lm(Ozone ~ Solar.R + Temp - 1, data = airquality ))
+airquality<- airquality[complete.cases(airquality),]
+airquality$pred1 <- fitted.values(glm(Ozone ~ Solar.R -1, data = airquality))
+airquality$pred2 <- fitted.values(glm(Ozone ~ Temp -1, data = airquality))
+```
+
+```{r, echo= TRUE}
+attach(airquality)
+par(mfrow = c(2, 1))
+plot(Solar.R, Ozone, xlab = "Solar.R", ylab = "Ozone", main = "Ozone ~ Solar.R")
+lines(Solar.R, pred1)
+plot(Temp, Ozone, xlab = "Temp", ylab = "Ozone", main = "Ozone ~ Temp")
+lines(Temp, pred2)
+```
